@@ -15,7 +15,10 @@ def explore_data(dataset, start, end, rows_and_columns=False):
     print_data = dataset[start:end]
     if rows_and_columns == True:
         print(print_data)
-                     
+    
+    
+        
+     
 
 
 def duplicate_and_unique_movies(dataset, index_):
@@ -40,6 +43,7 @@ def duplicate_and_unique_movies(dataset, index_):
     
     duplicates = {key: value for key, value in duplicate_movies.items() if value >= 2}
     print(duplicates)
+    return duplicates
 
 
 def movies_lang(dataset, index_, lang_):
@@ -86,7 +90,7 @@ def rate_bucket(dataset, rate_low, rate_high):
 
     for movie in movies:
         rating = float(movie[11])
-        if rating in range(rate_low,rate_high):
+        if rating >=rate_low and rating <= rate_high: # in range(rate_low,rate_high+1):
             rated_movies.append(movie)
     
     return rated_movies
@@ -107,7 +111,7 @@ print(movies_header)
 
 # Subset the movies dataset such that the header is removed from the list and store it back in movies
 
-movies = movies[1:len(movies)]
+movies = movies[1:]
 
 # Delete wrong data
 # Explore the row #4553. You will see that as apart from the id, description, status and title, no other information is available.
@@ -120,7 +124,7 @@ explore_data(movies,1,5,True)
 
 
 # Our dataset might have more than one entry for a movie. Call duplicate_and_unique_movies() with index of the name to check the same.
-duplicate_and_unique_movies(movies,13)
+duplicates_movies = duplicate_and_unique_movies(movies,13)
 
 
 
@@ -134,11 +138,17 @@ for movie in movies:
 
 
 # Create a list 'movies_clean', which will filter out the duplicate movies and contain the rows with maximum number of reviews for duplicate movies, as stored in 'review_max'. 
-# TO DO 
+movies_clean = []
+duplicate_movie_names = duplicates_movies.keys()
+for movie in movies:
+    if movie[-2] in duplicate_movie_names:
+        movies_clean.append([movie[-2:-3]])
+
 
 
 # Calling movies_lang(), extract all the english movies and store it in movies_en.
 movies_en = movies_lang(movies,3,'en')
+print(len(movies),len(movies_en))
 
 
 
